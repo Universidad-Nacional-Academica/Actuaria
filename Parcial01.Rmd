@@ -5,12 +5,12 @@ title: |
   | \vspace{1cm}
 subtitle: |
   | \LARGE Distribuciones de Supervivencia & Tablas de vida
-  | \vspace{3cm}
+  | \vspace{4cm}
 author: |
   |  Por:
   |  \Large Jefferson Gamboa Betancur
   |  \Large Luis Felipe Bedoya Martínez
-  |  \vspace{4cm}
+  |  \vspace{3cm}
 date: |
   | Facultad de Ciencias
   | Medellín
@@ -32,3 +32,27 @@ knitr::opts_chunk$set(echo = TRUE, message = FALSE,
 \newpage
 
 \setcounter{page}{1}
+
+# Problema 1
+
+Considere la fuerza de mortalidad estándar $\mu_{x+t}$ según el modelo asignado. 
+Utilice los parámetros que aparecen en los ejemplos de las Notas de Clase, vea 
+las secciones \textsection 2.5 y \textsection 2.6.
+
+Asuma una fuerza de mortalidad sub-estándar según el modelo multiplicativo en
+(2.27), para una vida (x), dada por 
+
+$$\mu_{x^s+t}=\theta\mu_{x+t}$$
+
+con $\theta > 1$ dada. Denote por $T(x^s)$ su vida media residual. Asuma $x_1=30$, 
+$t=20$, $\theta=1.2$.
+
+\benum
+  \item Defina la probabilidad de fallecer dos vidas $x1$, $x2$ antes de $t$ años como
+  
+  $$_{t}q_{\overline{x_1x_2}}:={_{t}q_{x_1}} \cdotp {_{t}q_{x_2}}$$
+  Encuentre $_{t}q_{\overline{x_1,x_1^s}}$. Observe que $_{t}q_{\overline{x_1x_2}} \neq 1-{_{t}p_{x_1x_2}}$.
+  \item Encuentre $\mathbb{E}(T(x_1^s))= \textup{\r{e}} x_1^s$. Encuentre $1-\frac{\textup{\r{e}} x_1^s}{e_{x_1}}$, el porcentaje se reduce la esperanza de vida de (x_1^s) con respecto a otra vida (x_1) con la fuerza de mortalidad $\mu_{x+t}$
+  \item Encuentre $P(T(x_1)<T(x_1^s))$.
+  \item Genere una Tabla de Vida con los valores de $\mu_x$. Encuentre la probabilidad de (30) fallecer antes de cumplir 50 con esta Tabla.
+\eenum
