@@ -1,0 +1,34 @@
+---
+title: |
+  | \includegraphics[height=2.5in]{figuras/logo.png}
+  | \Huge\bf {Parcial 1}
+  | \vspace{1cm}
+subtitle: |
+  | \LARGE Distribuciones de Supervivencia & Tablas de vida
+  | \vspace{3cm}
+author: |
+  |  Por:
+  |  \Large Jefferson Gamboa Betancur
+  |  \Large Luis Felipe Bedoya Martínez
+  |  \vspace{4cm}
+date: |
+  | Facultad de Ciencias
+  | Medellín
+  | 2021
+output:
+   pdf_document:
+       includes:
+        in_header: mystyle.tex
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, 
+                      warning = FALSE, comment = '', 
+                      fig.show = "asis", fig.align = "center")
+```
+
+\thispagestyle{empty}
+
+\newpage
+
+\setcounter{page}{1}
