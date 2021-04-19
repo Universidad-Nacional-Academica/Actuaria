@@ -107,7 +107,18 @@ Ahora:
 \end{align*}
 ```
 
-\item
+\subsection{(b)}
+
+```{=tex}
+\begin{align*}
+\mathbb{E}[T(x_1^s)] &= \textup{\r{e}} x_1^s \\
+\mathbb{E}[T(x_1^s)] &= \int_0^\infty P(T(X_1^s)>t)dt \\
+                     &= \int_0^\infty \prescript{}{t}{p}_{x_1^s}dt \\
+                     &= \int_0^\infty \prescript{}{t}{p}_{x_1}e^{-\theta t}dt \\
+                     &= \int_0^{\omega-x_1} \left(1- \cfrac{t}{\omega-x_1} \right) e^{-\theta t}dt\\
+                     &= \cfrac{1-e^{-\theta(\omega-x_1)}}{\theta} + \cfrac{\theta e^{-\theta(\omega-x_1)}(\theta-x_1) + e^{-\theta (\omega-x_1)} + 1}{\theta^2(\omega-x_1)}
+\end{align*}
+```
 
 
 
