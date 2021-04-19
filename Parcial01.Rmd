@@ -120,7 +120,16 @@ Ahora:
 \end{align*}
 ```
 
+\subsection{(c)}
 
+
+```{=tex}
+\begin{align*}
+\mathbb{P}(T(x_1) < T(x_1^s)) &= \int_0^{\omega-x} P(T(x_1) < T(x_1^s) \arrowvert T(x_1) = t) \prescript{}{t}{p}_{x_1}\mu_{x_1 + t}dt\\
+                              &= \int_0^{\omega-x} P(t< T(x_1^s)) \prescript{}{t}{p}_{x_1}\mu_{x_1 + t} dt\\
+                              &= \int_0^{\omega-x}e^{-\theta t}(\prescript{}{t}{p}_{x_1})^2\mu_{x_1+t} dt
+\end{align*}
+```
 
  
 
