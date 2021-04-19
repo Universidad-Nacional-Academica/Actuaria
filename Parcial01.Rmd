@@ -62,8 +62,8 @@ $_{t}q_{\overline{x_1x_2}} \neq 1-{_{t}p_{x_1x_2}}$.
 
 \item
 
-Encuentre $\mathbb{E}(T(x_1^s))= \textup{\r{e}} x_1^s$. Encuentre
-$1-\frac{\textup{\r{e}} x_1^s}{e_{x_1}}$, el porcentaje se reduce la esperanza de vida de
+Encuentre $\mathbb{E}(T(x_1^s))= \textup{\r{e}}_{x_1^s}$. Encuentre
+$1-\cfrac{\textup{\r{e}}_{x_1^s}}{e_{x_1}}$, el porcentaje se reduce la esperanza de vida de
 $(x_1^s)$ con respecto a otra vida $(x_1)$ con la fuerza de mortalidad $\mu_{x+t}$
 
 \item
@@ -79,14 +79,31 @@ fallecer antes de cumplir 50 con esta Tabla. \eenum
 
 \subsection{(a)}
 
+Sea la probabilidad de fallecer dos vidas $x_1$ y $x_2$ antes de $t$ años como: 
+
 ```{=tex}
 \begin{align*}
-    \prescript{}{t}{q}_{\overline{x_1 x_2}} &= \prescript{}{t}{q}_{x_1} \cdot \prescript{}{t}{q}_{x_2} & \\
-    \mu^{s}_{x+t} &= \theta\mu_{x+t},& \theta > 1 \\
-    \prescript{}{t}{p}_{\overline{x_1x_2}} &= \mathbb{P}((T(x_1) > t) \cup (T(x_2)>t)) & \\
-    &= \prescript{}{t}{p}_{x_1} + \prescript{}{t}{p}_{x_2} - \prescript{}{t}{p}_{x_1}\prescript{}{t}{p}_{x_2} &
+    \prescript{}{t}{q}_{\overline{x_1 x_2}} &= \prescript{}{t}{q}_{x_1} \cdot \prescript{}{t}{q}_{x_2}\\
 \end{align*}
 ```
+
+y la fuerza de mortalidad sub-estándar.
+
+```{=tex}
+\begin{align*}
+    \mu^{s}_{x+t} = \theta\mu_{x+t} \text{ con } \theta > 1
+\end{align*}
+```
+
+Luego:
+
+```{=tex}
+\begin{align*}
+    \prescript{}{t}{p}_{\overline{x_1x_2}} &= \mathbb{P}((T(x_1) > t) \cup (T(x_2)>t)) \\
+    &= \prescript{}{t}{p}_{x_1} + \prescript{}{t}{p}_{x_2} - \prescript{}{t}{p}_{x_1}\prescript{}{t}{p}_{x_2}
+\end{align*}
+```
+
 Por lo tanto
 
 ```{=tex}
@@ -96,16 +113,28 @@ Por lo tanto
   \therefore \prescript{}{t}{q}_{\overline{x_1 x_2}} &= 1 - \prescript{}{t}{p}_{\overline{x_1x_2}}
 \end{align*}
 ```
+
 Ahora:
 
 ```{=tex}
 \begin{align*}
-\prescript{}{t}{q}_{\overline{x_1 x_1^s}} &= 1 - \prescript{}{t}{p}_{\overline{x_1 x_1^s}} & \\ 
-                                          &= 1 - \prescript{}{t}{p}_{x_1} - \prescript{}{t}{p}_{x_1^s} + \prescript{}{t}{p}_{x_1}\prescript{}{t}{p}_{x_1^s} & \\
-                                          &= 1 - \prescript{}{t}{p}_{x_1} - \prescript{}{t}{p}_{x_1^\theta} + \prescript{}{t}{p}_{x_1}\prescript{}{t}{p}_{x_1^\theta} & \text{Por el modelo multiplicativo} \\
-                                          &= \left(1- \prescript{}{t}{p}_{x_1}\right) (1 - \prescript{}{t}{p}_{x_1^\theta}) & 
+\prescript{}{t}{q}_{\overline{x_1 x_1^s}} &= 1 - \prescript{}{t}{p}_{\overline{x_1 x_1^s}} \\ 
+                                          &= 1 - \prescript{}{t}{p}_{x_1} - \prescript{}{t}{p}_{x_1^s} +  \prescript{}{t}{p}_{x_1}\prescript{}{t}{p}_{x_1^s} \\
+\text{Por el modelo multiplicativo}  \\
+                                          &= 1 - \prescript{}{t}{p}_{x_1} - \prescript{}{t}{p}_{x_1^\theta} + \prescript{}{t}{p}_{x_1}\prescript{}{t}{p}_{x_1^\theta} \\
+                                         &= \left(1- \prescript{}{t}{p}_{x_1}\right) (1 - \prescript{}{t}{p}_{x_1^\theta})  
 \end{align*}
 ```
+
+Luego
+
+```{=tex}
+\begin{align*}
+\prescript{}{20}{q}_{\overline{30, 30^s}} &= \left(1- \prescript{}{20}{p}_{30}\right) (1 - \prescript{}{20}{p}_{30^{1.2}})\\
+\end{align*}
+```
+
+
 
 \subsection{(b)}
 
