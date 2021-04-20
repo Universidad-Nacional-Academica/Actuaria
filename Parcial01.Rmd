@@ -7,10 +7,10 @@ subtitle: |
   | \LARGE Distribuciones de Supervivencia & Tablas de vida
   | \vspace{4cm}
 author: |
+  |  Por:
+  |  \vspace{3cm}
   |  \Large Jefferson Gamboa Betancur
   |  \Large Luis Felipe Bedoya Martínez
-  |  \vspace{3cm}
-  |  Por:
 date: |
   | Facultad de Ciencias
   | Medellín
@@ -45,7 +45,7 @@ parámetros que aparecen en los ejemplos de las Notas de Clase, vea las seccione
 Asuma una fuerza de mortalidad sub-estándar según el modelo multiplicativo en (2.27), para
 una vida (x), dada por
 
-$$\mu_{x^s+t}=\theta\mu_{x+t}$$
+$$\mu_{x+t}^s=\theta\mu_{x+t}$$
 
 con $\theta > 1$ dada. Denote por $T(x^s)$ su vida media residual. Asuma $x_1=30$, $t=20$,
 $\theta=1.2$.
@@ -62,8 +62,8 @@ $_{t}q_{\overline{x_1x_2}} \neq 1-{_{t}p_{x_1x_2}}$.
 
 \item
 
-Encuentre $\mathbb{E}(T(x_1^s))= \textup{\r{e}}_{x_1^s}$. Encuentre
-$1-\cfrac{\textup{\r{e}}_{x_1^s}}{e_{x_1}}$, el porcentaje se reduce la esperanza de vida de
+Encuentre $\mathbb{E}(T(x_1^s))= \textup{\r{e}} x_1^s$. Encuentre
+$1-\frac{\textup{\r{e}} x_1^s}{e_{x_1}}$, el porcentaje se reduce la esperanza de vida de
 $(x_1^s)$ con respecto a otra vida $(x_1)$ con la fuerza de mortalidad $\mu_{x+t}$
 
 \item
@@ -75,92 +75,139 @@ Encuentre $P(T(x_1)<T(x_1^s))$.
 Genere una Tabla de Vida con los valores de $\mu_x$. Encuentre la probabilidad de (30)
 fallecer antes de cumplir 50 con esta Tabla. \eenum
 
+
+```{r}
+muxt.gm <- function(t,x,pars){
+  a <- pars[1]
+  b <- pars[2]
+  C <- pars[3]
+  mx <- a + b*C^(x+t)
+  return(mx)
+}
+
+tpx.gm <- function(t,x,pars){
+  a <-  pars[1]
+  b <- pars[2]
+  C <- pars[3]
+  p <- exp(-a*t - b*C^x*(C^t-1)/log(C))
+  return(p)
+}
+
+#--- parámetros GM
+a <-  0.0005
+b <- 10^(-4.12)
+C <- 10^(0.038)
+pars <- c(a,b,C)
+
+#--- parámetros del problema
+x1 <- 30
+t <- 20
+theta <- 1.2
+w <- 110
+```
+
+\newpage
+
 \section{Solución}
 
 \subsection{(a)}
 
-Sea la probabilidad de fallecer dos vidas $x_1$ y $x_2$ antes de $t$ años como: 
-
+Con la información en el enunciado se tiene que:
 ```{=tex}
 \begin{align*}
-    \prescript{}{t}{q}_{\overline{x_1 x_2}} &= \prescript{}{t}{q}_{x_1} \cdot \prescript{}{t}{q}_{x_2}\\
-\end{align*}
-```
-
-y la fuerza de mortalidad sub-estándar.
-
-```{=tex}
-\begin{align*}
-    \mu^{s}_{x+t} = \theta\mu_{x+t} \text{ con } \theta > 1
-\end{align*}
-```
-
-Luego:
-
-```{=tex}
-\begin{align*}
-    \prescript{}{t}{p}_{\overline{x_1x_2}} &= \mathbb{P}((T(x_1) > t) \cup (T(x_2)>t)) \\
-    &= \prescript{}{t}{p}_{x_1} + \prescript{}{t}{p}_{x_2} - \prescript{}{t}{p}_{x_1}\prescript{}{t}{p}_{x_2}
-\end{align*}
-```
-
-Por lo tanto
-
-```{=tex}
-\begin{align*}
-  \prescript{}{t}{q}_{\overline{x_1 x_2}} = \prescript{}{t}{q}_{x_1} \cdot \prescript{}{t}{q}_{x_2} &= \left(1 - \prescript{}{t}{p}_{x_1}\right)\left(1 - \prescript{}{t}{p}_{x_2}\right)\\
+  \prescript{}{t}{q}_{\overline{x_1 x_2}} =\prescript{}{t}{q}_{x_1} \cdot \prescript{}{t}{q}_{x_2} &= \left(1 - \prescript{}{t}{p}_{x_1}\right)\left(1 - \prescript{}{t}{p}_{x_2}\right)\\
   &= 1 - \prescript{}{t}{p}_{x_1} - \prescript{}{t}{p}_{x_2} + \prescript{}{t}{p}_{x_1}\prescript{}{t}{p}_{x_2} \\
-  \therefore \prescript{}{t}{q}_{\overline{x_1 x_2}} &= 1 - \prescript{}{t}{p}_{\overline{x_1x_2}}
+  \therefore \prescript{}{t}{q}_{\overline{x_1 x_2}} &= 1 - \prescript{}{t}{p}_{\overline{x_1x_2}} \\
+                                                    & \text{Donde} \\ 
+\prescript{}{t}{p}_{\overline{x_1x_2}} &= \prescript{}{t}{p}_{x_1} + \prescript{}{t}{p}_{x_2} - \prescript{}{t}{p}_{x_1}\prescript{}{t}{p}_{x_2}
 \end{align*}
 ```
 
-Ahora:
-
+Por lo tanto:
 ```{=tex}
 \begin{align*}
-\prescript{}{t}{q}_{\overline{x_1 x_1^s}} &= 1 - \prescript{}{t}{p}_{\overline{x_1 x_1^s}} \\ 
-                                          &= 1 - \prescript{}{t}{p}_{x_1} - \prescript{}{t}{p}_{x_1^s} +  \prescript{}{t}{p}_{x_1}\prescript{}{t}{p}_{x_1^s} \\
-\text{Por el modelo multiplicativo}  \\
-                                          &= 1 - \prescript{}{t}{p}_{x_1} - \prescript{}{t}{p}_{x_1^\theta} + \prescript{}{t}{p}_{x_1}\prescript{}{t}{p}_{x_1^\theta} \\
-                                         &= \left(1- \prescript{}{t}{p}_{x_1}\right) (1 - \prescript{}{t}{p}_{x_1^\theta})  
+\prescript{}{t}{q}_{\overline{x_1 x_1^s}} &= \prescript{}{t}{q}_{x_1} \cdot \prescript{}{t}{q}_{x_1^s}\\
+                                          &= 1 - \prescript{}{t}{p}_{x_1} - \prescript{}{t}{p}_{x_1^s} + \prescript{}{t}{p}_{x_1}\prescript{}{t}{p}_{x_1^s} \\
+                                          & \text{Por el modelo multiplicativo:} \\
+                                          &= 1 - \prescript{}{t}{p}_{x_1} - \prescript{}{t}{p^\theta}_{x_1} + \prescript{}{t}{p}_{x_1}\prescript{}{t}{p^\theta}_{x_1} \\
+                                          & \text{Finalmente se tiene que:} \\
+\prescript{}{t}{q}_{\overline{x_1 x_1^s}} &= \left(1- \prescript{}{t}{p}_{x_1}\right) (1 - \prescript{}{t}{p^\theta}_{x_1}) & 
 \end{align*}
 ```
 
-Luego
-
-```{=tex}
-\begin{align*}
-\prescript{}{20}{q}_{\overline{30, 30^s}} &= \left(1- \prescript{}{20}{p}_{30}\right) (1 - \prescript{}{20}{p}_{30^{1.2}})\\
-\end{align*}
+```{r}
+(pt.x1 = tpx.gm(t,x1,pars))
+```
+```{r}
+(1-pt.x1)*(1-(pt.x1)^theta)
 ```
 
-
+\newpage
 
 \subsection{(b)}
 
+Se conoce que:
 ```{=tex}
 \begin{align*}
 \mathbb{E}[T(x_1^s)] &= \textup{\r{e}} x_1^s \\
-\mathbb{E}[T(x_1^s)] &= \int_0^\infty P(T(X_1^s)>t)dt \\
+                      & \text{Ahora, por definición:} \\
+\mathbb{E}[T(x_1^s)] &= \int_0^\infty P(T(x_1^s)>t)dt \\
                      &= \int_0^\infty \prescript{}{t}{p}_{x_1^s}dt \\
-                     &= \int_0^\infty \prescript{}{t}{p}_{x_1}e^{-\theta t}dt \\
-                     &= \int_0^{\omega-x_1} \left(1- \cfrac{t}{\omega-x_1} \right) e^{-\theta t}dt\\
-                     &= \cfrac{1-e^{-\theta(\omega-x_1)}}{\theta} + \cfrac{\theta e^{-\theta(\omega-x_1)}(\theta-x_1) + e^{-\theta (\omega-x_1)} + 1}{\theta^2(\omega-x_1)}
+                     & \text{Por el modelo multiplicativo:} \\
+                     &= \int_0^\infty \prescript{}{t}{p^\theta}_{x_1}dt \\
+                     &= \int_0^{\omega-x_1} \left( e^{-at-\frac{bc^{x_{1}}}{ln(c)}(c^t-1)} \right)^\theta dt
 \end{align*}
 ```
 
+```{r}
+#------uso de integracion numerica con R
+f <- function(t) tpx.gm(t,x1,pars)^theta
+(integrate(f,lower=0,upper=w-x1)$value)
+```
+
+\newpage
+
 \subsection{(c)}
 
-
+Aplicando el teorema de probabilidad total se tiene que:
 ```{=tex}
 \begin{align*}
 \mathbb{P}(T(x_1) < T(x_1^s)) &= \int_0^{\omega-x} P(T(x_1) < T(x_1^s) \arrowvert T(x_1) = t) \prescript{}{t}{p}_{x_1}\mu_{x_1 + t}dt\\
                               &= \int_0^{\omega-x} P(t< T(x_1^s)) \prescript{}{t}{p}_{x_1}\mu_{x_1 + t} dt\\
-                              &= \int_0^{\omega-x}e^{-\theta t}(\prescript{}{t}{p}_{x_1})^2\mu_{x_1+t} dt
+                              &= \int_0^{\omega-x} \prescript{}{t}{p}_{x_1^s}\prescript{}{t}{p}_{x_1} \mu_{x_1+t} dt \\
+                              & \text{Por el modelo multiplicativo:} \\
+                              &= \int_0^{\omega-x} \prescript{}{t}{p^\theta}_{x_1}\prescript{}{t}{p}_{x_1} \mu_{x_1+t} dt\\
+                              &= \int_0^{\omega-x} \prescript{}{t}{p^{\theta+1}}_{x_1} \mu_{x_1+t} dt\\
+                              &= \int_0^{\omega-x_1} \left( e^{-at-\frac{bc^{x_{1}}}{ln(c)}(c^t-1)} \right)^{\theta+1} \left( a+bc^{x_{1}+t} \right) dt
 \end{align*}
 ```
 
- 
+```{r}
+#------uso de integracion numerica con R
+f <- function(t) (tpx.gm(t,x1,pars)^(theta+1)) * muxt.gm(t,x1,pars)
+(integrate(f,lower=0,upper=w-x1)$value)
+```
+
+\newpage
+
+\subsection{(d)}
+
+```{r}
+#---------generar tablas de vida con base
+# en la fuerza de mortalidad estimada
+require(lifecontingencies)
+x = seq(0,109)
+probs = tpx.gm(t,x,pars)
+D = probs2lifetable(probs, radix = 100000, type = "px", name = "TablaVidaGM")
+head(D)
+tail(D)
+TVH <- new("lifetable", x=D@x, lx=D@lx, name="tablas.GM")
+```
 
 
+```{r}
+#------probabilidad de fallecer
+(qxt = qxt(TVH,x=x1,t=t))
+```
 
+La probabilidad de que (30) fallezca antes de cumplir 50 es de 6.47% aproximadamente.
