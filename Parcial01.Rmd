@@ -228,16 +228,33 @@ require(lifecontingencies)
 x = seq(0,109)
 probs = tpx.gm(1,x,pars)
 D = probs2lifetable(probs, radix = 100000, type = "px", name = "TablaVidaGM")
-head(D)
-tail(D)
-TVH <- new("lifetable", x=D@x, lx=D@lx, name="tablas.GM")
 ```
 
+\centering{\includegraphics[height=1in]{figuras/head_tail.png}}
+
+```{r include=FALSE}
+head(D)
+tail(D)
+```
+
+```{r}
+TVH <- new("lifetable", x=D@x, lx=D@lx, name="tablas.GM")
+```
 
 ```{r}
 #------probabilidad de fallecer
 qxt(TVH,x=x1,t=t)
-pxt(TVH,x=x1,t=t)
 ```
 
-La probabilidad de que (30) fallezca antes de cumplir 50 es de 6.47% aproximadamente.
+Con las tablas de vida la probabilidad de que (30) fallezca antes de cumplir 50 es de 6.47% aproximadamente.
+
+\begin{justify}
+  El anterior resultado se puede verificar, puesto que coincide exactamente con el    complemento de la probabilidad de sobrevivir la vida de (30) de Gompertz-Makeham    calculada en $\textbf{(a)}$, como se muestra a continuación:
+\end{justify}
+
+\vspace{0.2cm}
+
+```{r}
+1 - pt.x1
+```
+
