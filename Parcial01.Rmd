@@ -246,11 +246,17 @@ Aplicando el teorema de probabilidad total se tiene que:
 \end{align*}
 ```
 
+La anterior integral se calcula numéricamente así:
+
+\vspace{0.2cm}
+
 ```{r}
-#------uso de integracion numerica con R
+#--- Uso de integración numérica
 f <- function(t) (tpx.gm(t,x1,pars)^(theta+1)) * muxt.gm(t,x1,pars)
 integrate(f,lower=0,upper=w-x1)$value
 ```
+
+Luego $\mathbb{P}(T(x_1) < T(x_1^s)) = 0.4545$ o también $\mathbb{P}(T(x_1^s) < T(x_1)) = 0.5455$, es decir, una persona de 30 años, con IC tiene un 54.55% de probabilidades de fallecer antes que otra de la misma edad pero en condición sana, si la supervivencia estuviera descrita por la función Gompertz-Makeham con los parámetros especificados.
 
 \newpage
 
