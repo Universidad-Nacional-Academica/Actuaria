@@ -151,7 +151,7 @@ pt.x1
 ```
 
 $$\prescript{}{t}{p}_{x_1} = 0.9353$$
-Suponiendo que $(x_1^s)$ sufre de insuficiencia cardíaca. La probabilidad de que una vida de (30) con IC sobreviva la vida de (50) por lo menos en 20 años es:
+Suponiendo que $(x_1^s)$ sufre de insuficiencia cardíaca (IC). La probabilidad de que una vida de (30) con IC sobreviva la vida de (50) por lo menos en 20 años es:
 
 \vspace{0.2cm}
 
@@ -271,7 +271,22 @@ probs = tpx.gm(1,x,pars)
 D = probs2lifetable(probs, radix = 100000, type = "px", name = "TablaVidaGM")
 ```
 
-\centering{\includegraphics[height=1in]{figuras/head_tail.png}}
+```{=tex}
+\begin{table}[H]
+\centering
+\begin{tabular}{cclcc}
+\hline
+\multicolumn{2}{c}{\textbf{head(D)}} &  & \multicolumn{2}{c}{\textbf{tail(D)}} \\ \hline
+\textit{\textbf{x}} & \textit{\textbf{lx}} &  & \textit{\textbf{x}} & \textit{\textbf{lx}} \\ \hline
+0 & 100000.00 &  & 105 & 19.8658931 \\
+1 & 99942.09 &  & 106 & 9.1503806 \\
+2 & 99883.49 &  & 107 & 3.9264942 \\
+3 & 99824.13 &  & 108 & 1.5595249 \\
+4 & 99763.95 &  & 109 & 0.5692864 \\
+5 & 99702.86 &  & 110 & 0.1895262 \\ \hline
+\end{tabular}
+\end{table}
+```
 
 ```{r include=FALSE}
 head(D)
