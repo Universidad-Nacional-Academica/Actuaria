@@ -138,7 +138,7 @@ Por lo tanto:
 \end{align*}
 ```
 
-Calculando la probabilidad de que una vida de (30) sobreviva la vida de (50) por lo menos en 20 años es:
+Calculando la probabilidad de que una vida sana de (30) sobreviva la vida de (50) por lo menos en 20 años es:
 
 \vspace{0.2cm}
 
@@ -151,15 +151,23 @@ pt.x1
 ```
 
 $$\prescript{}{t}{p}_{x_1} = 0.9353$$
-Por ende:
+Suponiendo que $(x_1^s)$ sufre de insuficiencia cardíaca. La probabilidad de que una vida de (30) con IC sobreviva la vida de (50) por lo menos en 20 años es:
+
+\vspace{0.2cm}
+
+```{r}
+pt.x1^theta
+```
+
+$$\prescript{}{t}{p}_{x_1^s} = 0.9229$$
+
+Por ende, dos vidas de la misma edad (30), la primera en condición sana y la segunda con IC la probabilidad de que ambas fallezcan antes de cumplir 50 años es:
 
 \vspace{0.2cm}
 
 ```{r}
 (1-pt.x1)*(1-(pt.x1)^theta)
 ```
-
-Suponiendo que $(x_1^s)$ sufre de insuficiencia cardíaca. Sean dos vidas de la misma edad (30), la primera en condición sana y la segunda con IC la probabilidad de que ambas fallezcan antes de cumplir 50 años es:
 
 $$\prescript{}{t}{q}_{\overline{x_1 x_1^s}} = 0.0049$$
 
@@ -181,7 +189,7 @@ Se conoce que:
 ```
 
 ```{r}
-#------uso de integracion numerica con R
+#--- Uso de integración numérica
 f <- function(t) tpx.gm(t,x1,pars)^theta
 integrate(f,lower=0,upper=w-x1)$value
 ```
