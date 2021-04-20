@@ -8,9 +8,9 @@ subtitle: |
   | \vspace{4cm}
 author: |
   |  Por:
-  |  \vspace{3cm}
   |  \Large Jefferson Gamboa Betancur
   |  \Large Luis Felipe Bedoya Martínez
+  |  \vspace{3cm}
 date: |
   | Facultad de Ciencias
   | Medellín
@@ -75,6 +75,7 @@ Encuentre $P(T(x_1)<T(x_1^s))$.
 Genere una Tabla de Vida con los valores de $\mu_x$. Encuentre la probabilidad de (30)
 fallecer antes de cumplir 50 con esta Tabla. \eenum
 
+### Definición de funciones
 
 ```{r}
 muxt.gm <- function(t,x,pars){
@@ -91,6 +92,11 @@ tpx.gm <- function(t,x,pars){
   p <- exp(-a*t - b*C^x*(C^t-1)/log(C))
   return(p)
 }
+```
+
+### Definición de parámetros
+
+```{r}
 #--- parámetros GM
 a <-  0.0005
 b <- 10^(-4.12)
@@ -132,13 +138,30 @@ Por lo tanto:
 \end{align*}
 ```
 
+Calculando la probabilidad de que una vida de (30) sobreviva la vida de (50) por lo menos en 20 años es:
+
+\vspace{0.2cm}
+
 ```{r}
-pt.x1 = tpx.gm(t,x1,pars)
+pt.x1 <- tpx.gm(t,x1,pars)
+```
+
+```{r echo=FALSE}
 pt.x1
 ```
+
+$$\prescript{}{t}{p}_{x_1} = 0.9353$$
+Por ende:
+
+\vspace{0.2cm}
+
 ```{r}
 (1-pt.x1)*(1-(pt.x1)^theta)
 ```
+
+Suponiendo que $(x_1^s)$ sufre de insuficiencia cardíaca. Sean dos vidas de la misma edad (30), la primera en condición sana y la segunda con IC la probabilidad de que ambas fallezcan antes de cumplir 50 años es:
+
+$$\prescript{}{t}{q}_{\overline{x_1 x_1^s}} = 0.0049$$
 
 \newpage
 
@@ -206,6 +229,7 @@ TVH <- new("lifetable", x=D@x, lx=D@lx, name="tablas.GM")
 ```{r}
 #------probabilidad de fallecer
 qxt(TVH,x=x1,t=t)
+pxt(TVH,x=x1,t=t)
 ```
 
 La probabilidad de que (30) fallezca antes de cumplir 50 es de 6.47% aproximadamente.
