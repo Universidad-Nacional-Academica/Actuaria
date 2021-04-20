@@ -179,7 +179,7 @@ Se conoce que:
 ```{=tex}
 \begin{align*}
 \mathbb{E}[T(x_1^s)] &= \textup{\r{e}} x_1^s \\
-                      & \text{Ahora, por definición:} \\
+                      & \text{Ahora, por definición, la vida media remanente se escribe como:} \\
 \mathbb{E}[T(x_1^s)] &= \int_0^\infty P(T(x_1^s)>t)dt \\
                      &= \int_0^\infty \prescript{}{t}{p}_{x_1^s}dt \\
                      & \text{Por el modelo multiplicativo:} \\
@@ -188,11 +188,46 @@ Se conoce que:
 \end{align*}
 ```
 
+La anterior integral se calcula numéricamente así:
+
+\vspace{0.2cm}
+
 ```{r}
 #--- Uso de integración numérica
 f <- function(t) tpx.gm(t,x1,pars)^theta
-integrate(f,lower=0,upper=w-x1)$value
+e.x1s <- integrate(f,lower=0,upper=w-x1)$value
 ```
+
+```{r echo=FALSE}
+e.x1s
+```
+
+Es decir, la esperanza de vida de (30) con IC es de $\textup{\r{e}} x_1^s = 42.0776$ años.
+
+Reciprocamente, se calcula la vida remanente de (30) siendo sano:
+
+\vspace{0.2cm}
+
+```{r}
+#--- Uso de integración numérica
+f <- function(t) tpx.gm(t,x1,pars)
+e.x1 <- integrate(f,lower=0,upper=w-x1)$value
+```
+
+```{r echo=FALSE}
+e.x1
+```
+
+Es decir, la esperanza de vida de (30) es de $\textup{\r{e}} x_1 = 44.1112$ años.
+
+Por lo tanto, 
+
+```{r}
+1 - (e.x1s / e.x1)
+```
+
+la disminución de la esperanza de vida para $30^s$ es del 4.61%.
+
 
 \newpage
 
