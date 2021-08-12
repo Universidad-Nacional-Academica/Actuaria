@@ -1,0 +1,63 @@
+---
+title: |
+  | \includegraphics[height=2.5in]{figuras/logo.png}
+  | \Huge\bf {Parcial 2}
+  | \vspace{1cm}
+subtitle: |
+  | \LARGE Modelos multiestados, definiciones de matemática financiera  & seguros de vida y atención médica
+  | \vspace{4cm}
+author: |
+  |  Por:
+  |  \Large Jefferson Gamboa Betancur
+  |  \Large Luis Felipe Bedoya Martínez
+  |  \vspace{3cm}
+date: |
+  | Facultad de Ciencias
+  | Medellín
+  | 2021
+output:
+   pdf_document:
+       includes:
+        in_header: mystyle.tex
+editor_options: 
+  markdown: 
+    wrap: 92
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, message = FALSE, 
+                      warning = FALSE, comment = '', 
+                      fig.show = "asis", fig.align = "center", cache = TRUE)
+```
+
+\thispagestyle{empty}
+
+\newpage
+
+\setcounter{page}{1}
+
+# Problema 1
+
+Problema sobre seguros médicos y seguros de vida.
+
+**Hipótesis para el problema:**
+
+\benum
+  \item La fuerza de mortalidad estándar $\mu_{x+t}$ dada por la ley de mortalidad asignada. Utilice los parámetros que aparecen en los ejemplos para la Ley escogida (vea las secciones \textsection 2.5 y \textsection 2.6).
+  \item Una fuerza de mortalidad sub-estándar multiplicativa: $\mu_{x+t}^s=k\mu_{x+t}$, con $k=1.02$.
+  \item La intensidad de transición $\mu_x^{ai}$ según el modelo Weibull dado en la sección \textsection 7.6.4, pag. 248, con los valores de los parámetros para mujeres especificados en el ejemplo 7.6.1, pag. 251.
+  \item Utilice una tasa $i=0.06$ y una tasa para incremento de costo de vida de $iq=0.025$, ambas efectivas anuales. Calcule para la edad: $x=40$. Use $n=110-x$ de manera que es un seguro de vida entera. Valor asegurado inicial $C=100$ unidades.
+\eenum
+
+**Puntos:**
+
+\benum
+  \item Calcule la prima neta $\bar{A}^{ai}_{x:{\lcroof{n}}}$, definida en (7.51), pag. 251, para un seguro médico continuo que paga al momento del diagnóstico de cirugía arterial. Ayuda: ver el Ejemplo 7.6.1, pag. 251.
+  \item Repita el cálculo del punto anterior cambiando la intensidad de transición $\mu^{ai}_x$ por $0.01 + \mu^{ai}_x$. ¿Qué significa este cambio? ¿Cómo afecta las primas $\bar{A}^{ai}_{x:{\lcroof{n}}}$?
+  \item Calcule la prima neta del seguro vida temporal, $\bar{A}^{1}_{x:{\lcroof{n}}}$, definida en (7.3), pag. 220 y la correspondiente para el seguro de vida que paga al final del mes, $A^{1(m)}_{x:{\lcroof{n}}}$ (ver (7.38), pag. 239), usando la relación
+  
+  $$A^{1(m)}_{x:{\lcroof{n}}}=\frac{\delta}{i^{(m)}}\bar{A}_{x:{\lcroof{n}}}$$
+  Ayuda: recordar que $i^{(m)}=m((1+i)^{1/m}-1)$, es la tasa nominal a $m$ períodos, ver (5.2), pag. 141.
+\eenum
+
+# Se trabaja con el modelo Perks1
