@@ -83,4 +83,31 @@ a_3 &= 1.123180\times 10^{-1},\\
 a_4 &= 1.982141\times 10^{-5}.
 \end{align*}
 
+\textbf{Código en r para la ley de mortalidad y la probabilidad de supervivencia}
+
+```{r}
+#------------- Ley Perks 1
+# Definir la fuerza de mortalidad
+muxt.perk1 = function(t, x, pars){
+a1 = pars[1]
+a2 = pars[2]
+a3 = pars[3]
+a4 = pars[4]
+m = (a1 + a2*exp(a3*(x + t)))/(a4*exp(a3*(x + t)) + 1)
+return(m)}
+
+#--------- Definir tpx
+tpx.perks1 = function(t, x, pars){
+a1 = pars[1]
+a2 = pars[2]
+a3 = pars[3]
+a4 = pars[4]
+g = (a1*a4 - a2)/(a3*a4)
+v = exp(- a1*t)*((a4*exp(a3*(x + t)) + 1)/(a4*exp(a3*x) + 1))^g
+return(v)}
+#----------ejemplo de parametros
+pars = c(7.130052*10^(-7), 2.005330*10^(-5), 1.123180*10^(-01), 1.982141*10^(-05))
+```
+
+
 
