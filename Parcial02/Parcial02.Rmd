@@ -62,6 +62,8 @@ Problema sobre seguros médicos y seguros de vida.
 
 # Solución
 
+## Hipótesis
+
 \textbf{Primera ley de mortalidad Perks. } \textit{W. Perks propuso dos leyes de mortalidad en 1932. La primera ley se define, utilizando la parametrización de la librería R MortalityLaws, por}
 
 \begin{align}
@@ -109,5 +111,16 @@ return(v)}
 pars = c(7.130052*10^(-7), 2.005330*10^(-5), 1.123180*10^(-01), 1.982141*10^(-05))
 ```
 
+\benum
+\item 
+\begin{align*}
+\bar{A}^{ai}_{x:{\lcroof{n}}} &= \int_{0}^{110-x} v^{t} b(t) \mu_{x+t}^{ai} {}_tp_{x}^{aa} dt \\
+&= \int_{0}^{110-x} v^{t} b(t) \mu_{x+t}^{ai} exp \left\{- \int_0^t \mu_{x+u}^{ai}  + \mu_{x+u}^{ad} \right\} dt 
+\end{align*}
 
+donde 
 
+\begin{align*}
+hola
+\end{align*}
+\eenum
