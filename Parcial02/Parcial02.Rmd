@@ -4,7 +4,7 @@ title: |
   | \Huge\bf {Parcial 2}
   | \vspace{1cm}
 subtitle: |
-  | \LARGE Modelos multiestados, definiciones de matemática financiera  & seguros de vida y atención médica
+  | \LARGE Modelos multiestados, matemática financiera, seguros de vida & atención médica
   | \vspace{4cm}
 author: |
   |  Por:
@@ -62,21 +62,21 @@ Problema sobre seguros médicos y seguros de vida.
 
 # Solución
 
-## Hipótesis
+Wilfred Perks propuso dos leyes de mortalidad en 1932, este trabajo se solucionó usando la primera de sus leyes. Definida a continuación:
 
-\textbf{Primera ley de mortalidad Perks. } \textit{W. Perks propuso dos leyes de mortalidad en 1932. La primera ley se define, utilizando la parametrización de la librería R MortalityLaws, por}
+\textbf{Primera ley de mortalidad Perks. } \textit{Utilizando la parametrización de la librería R MortalityLaws, por}
 
 \begin{align}
 \mu_{x+t} = \cfrac{a_1 e^{a_3(x + t)} + a_2}{a_4 e^{a_3(x + t)} + 1}.
 \end{align}
 
-\textit{para} $x \in \{0,1,\cdots, \omega\},$ \textit{con $a_1, a_2, a_3, a_4$ parámetros positivos. Y la probabilidad de supervivencia es:}
+\textit{para} $x \in \{0,1,\cdots, \omega\},$ \textit{con $a_1, a_2, a_3, a_4$ parámetros positivos y la probabilidad de supervivencia como:}
 
 \begin{align}
 {}_{t}p_{x} &= e^{-a_1t}\left(\cfrac{a_4e^{a_3(x+t)}+1}{a_4e^{a_3x}+1} \right)^g, \hspace{1cm} \text{ con } g = \cfrac{a_1a_4-a_2}{a_3a_4}
 \end{align}
 
-\textit{Y los parámetros $a_1, a_2, a_3$ y $a_4$ dados en el ejemplo \textbf{2.6.2} son:}
+\textit{Los parámetros $a_1, a_2, a_3$ y $a_4$ dados en el ejemplo \textbf{2.6.2} son:}
 
 \begin{align*}
 a_1 &= 7.130052\times 10^{-7},\\
@@ -85,32 +85,61 @@ a_3 &= 1.123180\times 10^{-1},\\
 a_4 &= 1.982141\times 10^{-5}.
 \end{align*}
 
-\textbf{Código en r para la ley de mortalidad y la probabilidad de supervivencia}
+\textbf{Definición en R}
 
 ```{r}
-#------------- Ley Perks 1
-# Definir la fuerza de mortalidad
-muxt.perk1 = function(t, x, pars){
-a1 = pars[1]
-a2 = pars[2]
-a3 = pars[3]
-a4 = pars[4]
-m = (a1 + a2*exp(a3*(x + t)))/(a4*exp(a3*(x + t)) + 1)
-return(m)}
+#----------Ley Perks 1
+#----------Definir la fuerza de mortalidad
+muxt.perk1 <- function(t, x, pars){
+  a1 <- pars[1]
+  a2 <- pars[2]
+  a3 <- pars[3]
+  a4 <- pars[4]
+  m <- (a1 + a2*exp(a3*(x + t)))/(a4*exp(a3*(x + t)) + 1)
+  return(m)
+}
 
-#--------- Definir tpx
-tpx.perks1 = function(t, x, pars){
-a1 = pars[1]
-a2 = pars[2]
-a3 = pars[3]
-a4 = pars[4]
-g = (a1*a4 - a2)/(a3*a4)
-v = exp(- a1*t)*((a4*exp(a3*(x + t)) + 1)/(a4*exp(a3*x) + 1))^g
-return(v)}
-#----------ejemplo de parametros
-pars = c(7.130052*10^(-7), 2.005330*10^(-5), 1.123180*10^(-01), 1.982141*10^(-05))
+#----------Definir tpx
+tpx.perks1 <- function(t, x, pars){
+  a1 <- pars[1]
+  a2 <- pars[2]
+  a3 <- pars[3]
+  a4 <- pars[4]
+  g <- (a1*a4 - a2)/(a3*a4)
+  v <- exp(- a1*t)*((a4*exp(a3*(x + t)) + 1)/(a4*exp(a3*x) + 1))^g
+  return(v)
+}
+
+#----------Tasas y beneficio
+i <- 0.06
+iq <- 0.025
+bt <- function(t) 100*(1+iq)^(floor(t))
+
+#----------Edades y período temporal en años
+x <- 40
+n <- 110 - x
+
+#----------muxai Weibull
+muxai <- function(t) hweibull(x+t,shape=aw,scale=bw)
+#----------muxai Weibull
+tpxai <- function(t) pweibull(x+t,shape=aw,scale=bw,lower.tail=FALSE)
+
+#----------
+fn <- function(t) bt(t)*(1+i)^(-t)*muxai(t)*tpxai(t)*tpx.perks1(t, x, pars)
+
+#----------Parámetros modelo Weibull
+#----------a = shape, b = scale
+#----------Mujeres
+mu <- 3.615433E-09
+tau <- 3.284108255
+aw <- tau+1
+bw <- ((tau+1)/mu)^(1/(tau+1))
+
+#----------Parámetros Perks 1
+pars <- c(7.130052*10^(-7), 2.005330*10^(-5), 1.123180*10^(-01), 1.982141*10^(-05))
 ```
 
+\newpage
 \benum
 \item Para calcular la prima neta para un seguro médico continuo que paga al momento del diagnostico de la cirugía arterial, para la vida de una mujer de edad $x = 40$ y el temporal es $n = 110 - x$ con un costo inicial de $C = 100$ unidades monetarias y una tasa inflación de $iq = 2.5\%$ efectivo anual. Utilizando una tasa técnica $i = 0.06$ efectivo anual.
 
