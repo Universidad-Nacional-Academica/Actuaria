@@ -179,10 +179,9 @@ int(fn, 0, n)
 
 Por tanto la prima neta para un seguro médico continuo que paga al momento del diagnostico del diagnostico de la cirugía arterial es: $\bar{A}^{ai}_{x:{\lcroof{n}}} = 3.680344$ unidades monetarias.
 
-\item Para este literal, si partimos desde la última ecuación para reemplazar la intensidad $\mu_{x}^{ai}$ por $0.01+\mu_{x}^{ai}$
+\item Para este literal, partiendo desde la última ecuación para reemplazar la intensidad $\mu_{x}^{ai}$ por $0.01+\mu_{x}^{ai}$
 
 nos da que:
-
 
 \begin{align*}
 \bar{A}^{ai}_{x:{\lcroof{n}}} &= 100 \times \int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x exp \left\{- \int_0^t \mu_{x+u}^{ai} du  \right\} \mu_{x+t}^{ai} dt \\
@@ -191,6 +190,11 @@ nos da que:
 &= 100 \left(\int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x exp \left\{- \int_0^t \mu_{x+u}^{ai} du  \right\} \cfrac{0.01}{exp(0.0t)} dt \right) \\ 
 &+  100 \left( \int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x exp \left\{- \int_0^t \mu_{x+u}^{ai} du  \right\} \cfrac{1}{exp(0.01t)} \mu_{x+u}^{ai} dt \right)
 \end{align*}
+
+Luego al integrar con *R* el resultado es el siguiente.
+
+
+\textbf{Desarrollo en R}
 
 ```{r}
 #Prima neta con intensidad 0.01 + mu_{x+t}^{ai}
@@ -202,6 +206,9 @@ fn2 <- function(t){
 int(fn2, 0, n)
 ```
 
+Esto quiere decir que al sumar 0.01 a la intensidad, aumenta la tendencia en 19.18331 unidades monetarias para el diagnostico de cirugía arterial en aproximadamente 5 unidades monetarias  $\left(\cfrac{19.18331}{3.680344} = 5.212369\right)$ para el pago de la prima neta. 
+
+\item Hola
 
 
 \eenum
