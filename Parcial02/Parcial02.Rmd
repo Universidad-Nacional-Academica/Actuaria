@@ -188,7 +188,7 @@ nos da que:
 \bar{A}^{ai}_{x:{\lcroof{n}}} &= 100 \times \int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x exp \left\{- \int_0^t \mu_{x+u}^{ai} du  \right\} \mu_{x+t}^{ai} dt \\
 &= 100 \times \int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x exp \left\{- \int_0^t \left( 0.01 + \mu_{x+u}^{ai}\right) du  \right\} \left( 0.01 + \mu_{x+u}^{ai}\right) dt\\
 &= 100 \times \int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x \cfrac{exp \left\{- \int_0^t \mu_{x+u}^{ai} du  \right\}}{exp(0.01t)}  \left( 0.01 + \mu_{x+u}^{ai}\right) dt \\
-&= 100 \left(\int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x exp \left\{- \int_0^t \mu_{x+u}^{ai} du  \right\} \cfrac{0.01}{exp(0.0t)} dt \right) \\ 
+&= 100 \left(\int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x exp \left\{- \int_0^t \mu_{x+u}^{ai} du  \right\} \cfrac{0.01}{exp(0.01t)} dt \right) \\ 
 &+  100 \left( \int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x exp \left\{- \int_0^t \mu_{x+u}^{ai} du  \right\} \cfrac{1}{exp(0.01t)} \mu_{x+u}^{ai} dt \right)
 \end{align*}
 
@@ -225,19 +225,30 @@ x = 40; i = 0.05; C = 100; n = 110-x; v = 1/(1+i)
 
 # Función a integrar
 ft = function(t) v^(t) * tpx.perks1(t, x, pars) * muxt.perk1(t, x, pars)
-
 #Integral
-integrate(ft, 0, n)$value
+C*integrate(ft, 0, n)$value
 ```
-y para el cálculo de la del seguro de vida que paga al final del mes
+Por lo tanto la prima neta temportal en años en tiempo continuo es de 23.29044 unidades monetarias. Y para el cálculo de la del seguro de vida que paga al final del mes se tiene qué:
+
+\begin{align*}
+  A^{1(m)}_{x:{\lcroof{n}}} = \int_0^n \cfrac{\delta}{i^{m}} A_{x:{\lcroof{n}}}
+\end{align*}
+
+donde $i^{(m)} = m[(1+i)^m-1]$, $\delta = Ln(1+i)$, y $m=12$.
+
+\textbf{Desarrollo en R}
 
 ```{r}
+#Parámetros
+m = 12; i = 0.05; 
+delta <- log(1+i); im <- m*((1 + i)^m - 1)
+v <- delta/im
 #vida entera pago en la m fracción del año
-m = 12
-fn = function(t){v^(ceiling(m*t))/m * tpx.perks1(t, x, pars) * muxt.perk1(t, x, pars)}
+
+fn = function(t){v * tpx.perks1(t, x, pars) * muxt.perk1(t, x, pars)}
 
 C*integrate(fn,0, n)$value
 ```
-
+Por tanto el seguro de vida que paga a final de mes es de $0.5108769$ unidades monetarias.
 
 \eenum
