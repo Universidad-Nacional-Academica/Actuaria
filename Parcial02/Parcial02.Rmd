@@ -120,12 +120,11 @@ x <- 40
 n <- 110 - x
 
 #----------muxai Weibull
-muxai <- function(t) hweibull(x+t,shape=aw,scale=bw)
-#----------muxai Weibull
-tpxai <- function(t) pweibull(x+t,shape=aw,scale=bw,lower.tail=FALSE)
+require(eha)
+muxai <- function(t) hweibull(x + t, shape = aw, scale = bw)
 
-#----------
-fn <- function(t) bt(t)*(1+i)^(-t)*muxai(t)*tpxai(t)*tpx.perks1(t, x, pars)
+#----------muxai Weibull
+tpxai <- function(t) pweibull(x + t, shape = aw,scale=bw,lower.tail=FALSE)
 
 #----------Parámetros modelo Weibull
 #----------a = shape, b = scale
@@ -137,18 +136,19 @@ bw <- ((tau+1)/mu)^(1/(tau+1))
 
 #----------Parámetros Perks 1
 pars <- c(7.130052*10^(-7), 2.005330*10^(-5), 1.123180*10^(-01), 1.982141*10^(-05))
+
 ```
 
 \newpage
 \benum
 \item Para calcular la prima neta para un seguro médico continuo que paga al momento del diagnostico de la cirugía arterial, para la vida de una mujer de edad $x = 40$ y el temporal es $n = 110 - x$ con un costo inicial de $C = 100$ unidades monetarias y una tasa inflación de $iq = 2.5\%$ efectivo anual. Utilizando una tasa técnica $i = 0.06$ efectivo anual.
 
-Para el modelo, la intensidad $\mu_{x}^{ai}$ se calculará como una Weibull especificada con los parámetros de las mujeres del ejemplo 7.6.1, donde $a = 4.284108$ y $b = 0.008249275$
+Para el modelo, la intensidad $\mu_{x}^{ai}$ se calculará como una Weibull especificada con los parámetros de las mujeres del ejemplo 7.6.1, donde $a = 4.284108$ y $b = 131.2171$
 
 Luego la intensidad de pasar de sano a enfermo es:
 
 \begin{align*}
-\mu_{x}^{ai} = \cfrac{a}{b}\left(\cfrac{x}{b}\right)^{a-1} = \cfrac{4.284108}{0.008249275}\left(\cfrac{40}{0.008249275}\right)^{4.284108-1} = 6.599307\times 10^{14}
+\mu_{x}^{ai} = \cfrac{a}{b}\left(\cfrac{x}{b}\right)^{a-1}
 \end{align*}
 
 Ahora se calcula $\mu_{x}^{ad}$ que es la fuerza de mortalidad de la Perks 1.
@@ -161,15 +161,47 @@ Ahora se calcula $\mu_{x}^{ad}$ que es la fuerza de mortalidad de la Perks 1.
 
 \begin{align*}
 \bar{A}^{ai}_{x:{\lcroof{n}}} &= \int_{0}^{110-x} v^{t} b(t) \mu_{x+t}^{ai} {}_tp_{x}^{aa} dt \\
-&= \int_{0}^{110-x} v^{t} b(t) \mu_{x+t}^{ai} exp \left\{- \int_0^t \mu_{x+u}^{ai}  + \mu_{x+u}^{ad} \right\} dt 
+&= \int_{0}^{110-x} v^{t} b(t) \mu_{x+t}^{ai} exp \left\{- \int_0^t \mu_{x+u}^{ai}  + \mu_{x+u}^{ad} \right\} dt \\
+&= 100 \times \int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x exp \left\{- \int_0^t \mu_{x+u}^{ai} du  \right\} \mu_{x+t}^{ai} dt
 \end{align*}
+
+Para desarrollar en cálculo de la integral se utilizará el siguiente código y así obtener el resultado.
+
+\textbf{Desarrollo en R}
+
+```{r}
+# Función de la prima neta
+fn <- function(t) bt(t) * (1+i)^(-t) * muxai(t) * tpxai(t) * tpx.perks1(t, x, pars)
+
+# Prima neta
+int(fn, 0, n)
+```
+
+Por tanto la prima neta para un seguro médico continuo que paga al momento del diagnostico del diagnostico de la cirugía arterial es: $\bar{A}^{ai}_{x:{\lcroof{n}}} = 3.680344$ unidades monetarias.
+
+\item Para este literal, si partimos desde la última ecuación para reemplazar la intensidad $\mu_{x}^{ai}$ por $0.01+\mu_{x}^{ai}$
+
+nos da que:
 
 
 \begin{align*}
-\mu_{x+t}^{ai} &= \\
-\mu_{x+u}^{ai} &= \\
-\mu_{x+u}^{ad} &= \\
-v^{t} &= \\
-b(t) &= .
+\bar{A}^{ai}_{x:{\lcroof{n}}} &= 100 \times \int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x exp \left\{- \int_0^t \mu_{x+u}^{ai} du  \right\} \mu_{x+t}^{ai} dt \\
+&= 100 \times \int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x exp \left\{- \int_0^t \left( 0.01 + \mu_{x+u}^{ai}\right) du  \right\} \left( 0.01 + \mu_{x+u}^{ai}\right) dt\\
+&= 100 \times \int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x \cfrac{exp \left\{- \int_0^t \mu_{x+u}^{ai} du  \right\}}{exp(0.01t)}  \left( 0.01 + \mu_{x+u}^{ai}\right) dt \\
+&= 100 \left(\int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x exp \left\{- \int_0^t \mu_{x+u}^{ai} du  \right\} \cfrac{0.01}{exp(0.0t)} dt \right) \\ 
+&+  100 \left( \int_{0}^{110-x} v^{t} (1+i_{q})^{\lfloor t \rfloor} {}_tp_x exp \left\{- \int_0^t \mu_{x+u}^{ai} du  \right\} \cfrac{1}{exp(0.01t)} \mu_{x+u}^{ai} dt \right)
 \end{align*}
+
+```{r}
+#Prima neta con intensidad 0.01 + mu_{x+t}^{ai}
+fn2 <- function(t){ 
+  bt(t) * (1+i)^(-t) * tpxai(t) * tpx.perks1(t, x, pars) * 0.01/exp(0.01*t) + 
+  bt(t) * (1+i)^(-t) * muxai(t) * tpxai(t) * tpx.perks1(t, x, pars) * 1/exp(0.01*t)
+} 
+
+int(fn2, 0, n)
+```
+
+
+
 \eenum
