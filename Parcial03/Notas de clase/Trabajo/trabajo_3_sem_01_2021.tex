@@ -1,0 +1,159 @@
+\documentclass[12pt]{article}
+
+
+\usepackage[latin1]{inputenc}
+\usepackage[dvips]{graphicx}
+\usepackage[spanish]{babel}
+\usepackage{amsmath,amsthm,latexsym,amssymb}
+     % Símbolos adicionales de AMS - LATEX
+%\usepackage{showkeys}
+\usepackage{lifecon}
+\setlength{\oddsidemargin}{0.15in}
+\setlength{\textwidth}{6in}
+\setlength{\topmargin}{-0.15in}
+\setlength{\textheight}{9.0in}
+\renewcommand{\baselinestretch}{1.15}
+\allowdisplaybreaks
+\decimalpoint
+\def\R{\mathbb R}
+\def\E{\mathbb E}
+\def\Q{\mathbb Q}
+\def\N{\mathbb N}
+\def\Z{\mathbb Z}
+\def\P{\mathbb P}
+\newtheorem{prop}{Proposición}[section]
+\newtheorem{defi}{Definición}[section]
+\newtheorem{cor}{Corolario}[section]
+\newtheorem{ejem}{Ejemplo}[section]
+
+\renewcommand{\baselinestretch}{1.15}
+\newcommand{\an}[1]{a_{\overline{#1\,\,}\!\mid}}
+\newcommand{\dan}[1]{\ddot{a}_{\overline{#1\,\,}\!\mid}}
+\newcommand{\act}[1]{_{\overline{#1\,\,}\!\mid}}
+
+\newcommand{\M}[1]{\mathcal{M}_+^{#1}}
+\def\MR#1{\href{http://www.ams.org/mathscinet-getitem?mr=#1}{MR#1}}
+
+\begin{document}
+
+\centerline{{\large Trabajo No 3} }
+\centerline{{\large Anualidades de vida} }
+\vspace{0.5cm}
+\centerline{Curso  Actuaría de Contingencias de Vida - Escuela de Estadística }
+\centerline{Agosto 17, 2021}
+\vspace{1.0cm}
+
+\subsection*{Sobre la entrega y valor del parcial}
+
+\begin{itemize}
+  \item El parcial tiene un valor de 24$\%$ de la nota definitiva.
+  \item Fecha de entrega: consultar Moodle
+  \item El reporte final es en pdf, subido a Moodle.  
+  \item Contenido del informe: nombre de los autores, enunciado del problema asignado,  
+desarrollo, código R.
+\end{itemize}  
+
+\subsection*{Guía desarrollo de los puntos del parcial} 
+
+\begin{itemize}
+\item \textbf{El enunciado del problema  asignado} está en la sección 8.6, pag. 364  de las Notas de Clase. El problema consiste de dos anualidades y la respuesta de cada una tiene un valor de 50$\%$. 
+
+\item  \textbf{información del modelo asignado} Todos los puntos tienen un modelo asignado. Los valores de los parámetros están en el enunciado de los problemas
+
+
+\item Los puntos requiren una respuesta numérica correcta. Incluya desarrollo, código R, explicaciones, etc. para poder evaluar el procedimiento en caso de respuesta incorrecta. 
+\item Si usa LaTex para el informe y quiere utilizar símbolos actuariales añada la librería \verb@\usepackage{lifecon}@. En Moodle están: el archivo \verb@lifecon.sty@ )(la librería), una guía en LifeConSymbolsGuide.pdf y un archivo .tex como ejemplo de programación para el informe.
+
+\end{itemize}
+\newpage
+\subsection*{Asignación de puntos por grupo}
+\begin{table}[htbp]
+
+\caption{Asignación de puntos a cada grupo}
+
+\begin{tabular}{|c|l|c|l|}
+\hline
+\multicolumn{4}{|l|}{ GM=Gompertz-Makeham, MB=Makeham-Beard } \\\hline
+Grupo &  Modelo &  Problema No   &  Estudiantes   \\\hline
+1 &    Perks1 &  1 &  Jefferson Gamboa  -- Luis Felipe Bedoya       \\\hline
+2 &    MB & 1 & Luisa Maria Acosta  -- Laura Camila Agudelo   \\\hline
+3 &    Siler &  1 &  Juan Felipe Munera  -- Lorena Padilla Jaramillo    \\\hline
+4 &    Perks1 &   2 & Jessica Quintero Lopez -- Valentina Yepes Valle        \\\hline
+5 &    Perks2 &  2  &  Jaime Andres Molina -- Valentina Garcia Velasquez        \\\hline
+7 &     MB &  3 &  David Ricardo Bravo  - Daniel Vásquez       \\\hline
+9 &     Perks1 &  3 &   Andrés Mauricio Gómez Ardila          \\\hline
+10 &    Perks2 &  4  & David Hernández   - Valentina López  \\\hline
+12 &    MB &  4  & Juan Diego Niño     \\\hline
+14 &    Perks1 &  5  &  Christian Saldarriaga Velásquez   \\\hline
+15 &    Perk2 &  5  &  Valentina Serrato Henao  \\\hline
+16 &    MB &  5  &  Camila Acosta  - Bryan Miranda  \\\hline
+\end{tabular}
+
+\end{table}
+
+Nota: los vínculos en el texto siguiente no funcionan porque están fuera del texto completo al que se refieren.
+
+\begin{enumerate}
+
+\item
+Las hipótesis y datos sobre tasas, edades, etc. son las mismas que se dieron para este grupo en el Trabajo No 2.
+Los valores monetarios pueden tomarse en millones de pesos. Sugerencia: revisar los ejemplos en las secciones \S\ref{sec.combinaciones.vida.continua},  pag. \pageref{sec.combinaciones.vida.continua} y \S\ref{sec.combinaciones.vida}, pag. \pageref{sec.combinaciones.vida}. 
+
+Encuentre el valor de cada una de las anualidades de vida: 
+\begin{enumerate}  
+\item  $ \ddot{a}_{x:\lcroof{n}}^{(m)}$, $m=12$, ver  \ref{aaxmn}, pag. \pageref{aaxmn}, 
+\item  $\anncon{x^s}{n}$ , ver (\ref{acnx.2}), pag. \pageref{acnx.2}. 
+\end{enumerate} 
+ Explique qué garantiza cada una y cuáles son sus diferencias.
+
+
+\item Las hipótesis y datos sobre tasas, edades, etc. son las mismas que se dieron para este grupo en el Trabajo No 2.
+Los valores monetarios pueden tomarse en millones de pesos. Sugerencia: revisar los ejemplos en las secciones \S\ref{sec.combinaciones.vida.continua},  pag. \pageref{sec.combinaciones.vida.continua} y \S\ref{sec.combinaciones.vida}, pag. \pageref{sec.combinaciones.vida}. 
+
+Encuentre el valor de cada una de las anualidades de vida, con $m=12$, $q=2$, tasa inflación $i_q=0.02$:
+\begin{enumerate}  
+\item  $(G^{(q)}\ddot{a})_{x:\lcroof{n}}^{(m)} $, ver (\ref{aaxmn}), pag. \pageref{aaxmn} 
+\item  $(G^{(q)}\bar{a})_{x^s:\lcroof{n}}$ , ver (\ref{Gacxqn}), pag. \pageref{Gacxqn}. 
+\end{enumerate} 
+ Explique qué garantiza cada una y cuáles son sus diferencias.
+
+\item Las hipótesis y datos sobre tasas, edades, etc. son las mismas que se dieron para este grupo en el Trabajo No 2.
+Los valores monetarios pueden tomarse en millones de pesos. Sugerencia: revisar los ejemplos en las secciones \S\ref{sec.combinaciones.vida.continua},  pag. \pageref{sec.combinaciones.vida.continua} y \S\ref{sec.combinaciones.vida}, pag. \pageref{sec.combinaciones.vida}. 
+
+
+Encuentre el valor de cada una de las anualidades de vida, con $m=12$, $q=2$, tasa lineal de inflación $\rho=0.03$:
+\begin{enumerate}  
+\item  $(L^{(q)}\ddot{a})_{x:\lcroof{n}}^{(m)} $, $m=12$, ver  (\ref{Laaxmn}), pag. \pageref{Laaxmn} 
+\item  $(L^{(q)}\bar{a})_{x^s:\lcroof{n}}$, ver (\ref{Lqacxn}), pag. \pageref{Lqacxn}. 
+\end{enumerate} 
+ Explique qué garantiza cada una y cuáles son sus diferencias.
+
+\item Las hipótesis y datos sobre tasas, edades, etc. son las mismas que se dieron para este grupo en el Trabajo No 2.
+Los valores monetarios pueden tomarse en millones de pesos. Sugerencia: revisar los ejemplos en las secciones \S\ref{sec.combinaciones.vida.continua},  pag. \pageref{sec.combinaciones.vida.continua} y \S\ref{sec.combinaciones.vida}, pag. \pageref{sec.combinaciones.vida}. 
+
+Encuentre el valor $C_p$ de  la  anualidad continua de vida, agregada, con tasa inflación $i_q=0.02$, y tasa lineal de inflación $\rho=0.015$:
+\begin{align*}
+C_p &= 12[(L^{(2)}\bar{a})_{x:\lcroof{n}} + (G^{(1)}\bar{a})_{x:\lcroof{n}}].
+\end{align*} 
+Ver (\ref{Lqacxn}), pag. \pageref{Lqacxn} y (\ref{Gacxqn}), pag. \pageref{Gacxqn}.  Explique cómo es el funcionamiento de esta anualidad.
+
+
+\item Las hipótesis y datos sobre tasas, edades, etc. son las mismas que se dieron para este grupo en el Trabajo No 2.
+Los valores monetarios pueden tomarse en millones de pesos. Sugerencia: revisar los ejemplos en las secciones \S\ref{sec.combinaciones.vida.continua},  pag. \pageref{sec.combinaciones.vida.continua} y \S\ref{sec.combinaciones.vida}, pag. \pageref{sec.combinaciones.vida}. 
+
+
+Encuentre el valor $C_p$ de  la  anualidad continua de vida, agregada, con $m=12$, $q=2$, con tasa inflación $i_q=0.02$, y tasa lineal de inflación $\rho=0.015$:
+\begin{align*}
+C_p &= (L^{(q)}\ddot{a})_{x:\lcroof{n}}^{(m)} + (G^{(q)}\ddot{a})_{x:\lcroof{n}}^{(m)}.
+\end{align*}  
+ Explique cómo es el funcionamiento de esta anualidad.
+
+
+\begin{enumerate}
+
+
+
+\end{document}
+ 
+
+
