@@ -19,14 +19,14 @@ output:
    pdf_document:
        includes:
         in_header: mystyle.tex
-editor_options: 
-  markdown: 
+editor_options:
+  markdown:
     wrap: 92
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE, message = FALSE, 
-                      warning = FALSE, comment = '', 
+knitr::opts_chunk$set(echo = TRUE, message = FALSE,
+                      warning = FALSE, comment = '',
                       fig.show = "asis", fig.align = "center", cache = TRUE)
 ```
 
@@ -42,43 +42,73 @@ Problema sobre anualidades de vida y cuidados médicos.
 
 \textbf{Hipótesis para el problema}
 
+```{=tex}
 \benum
-  \item \textbf{El enunciado del problema asignado} está en la sección 8.6, pág. 364 de las Notas de clase. El problema consiste de dos anualidades y la respuesta de cada una tienen un valor de $50\%$
-  \item \textbf{Información del modelo asignado} Todos los puntos tienen un modelo asignado. Los valores de los parámetros están en el enunciado de los problemas
-  \item Los puntos requieren una respuesta numérica correcta. Incluya desarrollo, código R, explicaciones, etc. para poder evaluar el procedimiento en caso de respuesta incorrecta.
-  \item Su usa LaTex para el informe y quiere utilizar símbolos actuariales añada la librería *lifecon.* En Moodle están: el archivo \text{lifecon.sty} (la librería), una guía en *LifeConSymbolsGuide.pdf* y un archivo \text{.tex} como ejemplo de programación para el informe.
-\eenum
+  \item
+```
+\textbf{El enunciado del problema asignado} está en la sección 8.6, pág. 364 de las Notas de
+clase. El problema consiste de dos anualidades y la respuesta de cada una tienen un valor de
+$50\%$
+
+\item
+
+\textbf{Información del modelo asignado} Todos los puntos tienen un modelo asignado. Los
+valores de los parámetros están en el enunciado de los problemas
+
+\item
+
+Los puntos requieren una respuesta numérica correcta. Incluya desarrollo, código R,
+explicaciones, etc. para poder evaluar el procedimiento en caso de respuesta incorrecta.
+
+\item
+
+Su usa LaTex para el informe y quiere utilizar símbolos actuariales añada la librería
+*lifecon.* En Moodle están: el archivo \text{lifecon.sty} (la librería), una guía en
+*LifeConSymbolsGuide.pdf* y un archivo \text{.tex} como ejemplo de programación para el
+informe. \eenum
 
 \textbf{Puntos: }
 
-Las hipótesis y datos sobre tasas, edades, etc. son lasmismas que se dieron para este grupo en el Trabajo No 2. Los valores monetarios pueden tomarse en millones de pesos. \textbf{Sugerencia:} revisar los ejemplos en las secciones \textsection 8.2.7, pág. 311 y \textsection 8.3.6, pág. 329.
+Las hipótesis y datos sobre tasas, edades, etc. son lasmismas que se dieron para este grupo
+en el Trabajo No 2. Los valores monetarios pueden tomarse en millones de pesos.
+\textbf{Sugerencia:} revisar los ejemplos en las secciones \textsection 8.2.7, pág. 311 y
+\textsection 8.3.6, pág. 329.
 
 Encuentre el valor de cada una de las anualidades de vida:
 
+
 \benum
   \item $\ddot{a}_{x:{\lcroof{n}}}^{(m)},\ m=12,$ ver 8.45, pág. 317,
-  \item $\bar{a}_{x^s:{\lcroof{n}}},$ ver (8.11), pág. 303.
+
+  \item $\bar{a}_{x^s:{\lcroof{n}}},$ ver (8.11), pág. 303. 
 \eenum
 
 Explique qué garantiza cada una y cuáles son sus diferencias
 
+
 # Solución
 
-Wilfred Perks propuso dos leyes de mortalidad en 1932, este trabajo se solucionó usando la primera de sus leyes. Definida a continuación:
 
-\textbf{Primera ley de mortalidad Perks. } \textit{Utilizando la parametrización de la librería R MortalityLaws, por}
+Wilfred Perks propuso dos leyes de mortalidad en 1932, este trabajo se solucionó usando la
+primera de sus leyes. Definida a continuación:
+
+\textbf{Primera ley de mortalidad Perks. }
+\textit{Utilizando la parametrización de la librería R MortalityLaws, por}
 
 \begin{align}
 \mu_{x+t} = \cfrac{a_1 e^{a_3(x + t)} + a_2}{a_4 e^{a_3(x + t)} + 1}.
 \end{align}
 
-\textit{para} $x \in \{0,1,\cdots, \omega\},$ \textit{con $a_1, a_2, a_3, a_4$ parámetros positivos y la probabilidad de supervivencia como:}
+\textit{para} $x \in \{0,1,\cdots, \omega\},$
+\textit{con $a_1, a_2, a_3, a_4$ parámetros positivos y la probabilidad de supervivencia como:}
+
 
 \begin{align}
 {}_{t}p_{x} &= e^{-a_1t}\left(\cfrac{a_4e^{a_3(x+t)}+1}{a_4e^{a_3x}+1} \right)^g, \hspace{1cm} \text{ con } g = \cfrac{a_1a_4-a_2}{a_3a_4}
 \end{align}
 
 \textit{Los parámetros $a_1, a_2, a_3$ y $a_4$ dados en el ejemplo \textbf{2.6.2} son:}
+
 
 \begin{align*}
 a_1 &= 7.130052\times 10^{-7},\\
@@ -88,6 +118,7 @@ a_4 &= 1.982141\times 10^{-5}.
 \end{align*}
 
 \textbf{Definición en R}
+
 
 ```{r}
 #----------Ley Perks 1
@@ -111,8 +142,81 @@ tpx.perks1 <- function(t, x, pars){
   v <- exp(- a1*t)*((a4*exp(a3*(x + t)) + 1)/(a4*exp(a3*x) + 1))^g
   return(v)
 }
+
+#----------Tasas y beneficio
+i <- 0.06
+iq <- 0.025
+bt <- function(t) 100*(1 + iq)^(floor(t))
+
+#----------Edades y período temporal en años
+x <- 40
+n <- 110 - x
+
+#----------muxai Weibull
+require(eha)
+muxai <- function(t) hweibull(x + t, shape = aw, scale = bw)
+
+#----------muxai Weibull
+tpxai <- function(t) pweibull(x + t, shape = aw, scale = bw, lower.tail = FALSE)
+
+#----------Parámetros modelo Weibull
+#----------a = shape, b = scale
+#----------Mujeres
+mu <- 3.615433E-09
+tau <- 3.284108255
+aw <- tau + 1
+bw <- ((tau + 1)/mu)^(1/(tau + 1))
+
+#----------Parámetros Perks 1
+pars <- c(7.130052*10^(-7), 2.005330*10^(-5), 1.123180*10^(-01), 1.982141*10^(-05))
 ```
 
 
+\benum
+\item Para encontrar la la prima neta en tiempo discreto con una $x = 40$ con $m$ pagos al año, de $1/m$ cada uno, para $m = 2, 4, 12$ (con anticipos) donde el temporal es $n = 110 - x$ con un costo inicial de $C = 1$ miles de unidades monetarias y una tasa de inflación del $iq = 25\%$ y una tasa técnica $i = 0.06$ efectivo anual cada una, se tiene que:
+  
+\begin{align*}
+  \ddot{a}_{x:{\lcroof{n}}}^{(m)} = \cfrac{1}{m} \sum_{k=0}^{mn-1} v^{k/m} {}_{K/m}p_x
+\end{align*}
+
+\textbf{desarrollo en R}
+```{r}
+aaxmn <-  function(x, m, n, i, pars){
+  v <-  1/(1 + i);
+  k <-  seq(0, m*n - 1, 1);
+  vkm <- v^(k/m);
+  kmpx <-  tpx.perks1(k/m, x, pars);
+  a  <-  sum(vkm*kmpx)/m;
+  return(a)
+  }
+#--------
+x = 40; i = 0.06; m = 12; w = 110; n = w - x; C = 1;
+#-------pagos de 1/12 cada mes anticipado, total 1 año = 1
+
+#-------respuesta
+(axmn = C*aaxmn(x, m, n, i, pars))
+
+## En progreso de analisis --->
+
+#-------anualidad vida entera pago continuo
+C = 1;
+fn = function(t) {
+  (1 + i)^(t)*tpx.perks1(t, x, pars)
+}
+
+(acxn = C*integrate(fn, 0, n)$value)
+#--------aproximar con una anualidad en tiempo continuo
+v = 1/(1 + i)
+dm = m*(1 - v^(1/m))
+delta = log(1 + i)
+(acxn*delta/dm)
+
+# Con base en los datos del Ejemplo 8.3.2, asumiendo n = 30. Es decir, 
+# el valor de una anualidad de vida por 30 años.
+
+n = 20
+aaxmn(x, m, n, i, pars)
+```
+\eenum
 
 
