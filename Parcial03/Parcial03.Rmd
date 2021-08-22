@@ -155,7 +155,7 @@ pars <- c(7.130052*10^(-7), 2.005330*10^(-5), 1.123180*10^(-01), 1.982141*10^(-0
 
 \textbf{Desarrollo en R}
 ```{r}
-#-------pagos de 1/12 cada mes anticipado, total 1 año = 1
+#----------Pagos de 1/12 cada mes anticipado, total 1 año = 1
 m = 12
 C = 1
 
@@ -168,25 +168,8 @@ aaxmn <-  function(x, m, n, i, pars){
   return(a)
   }
 
-#-------respuesta
+#----------Respuesta
 (axmn = C*aaxmn(x, m, n, i, pars))
-
-## En progreso de análisis --->
-
-#-------anualidad vida entera pago continuo
-fn = function(t) (1 + i)^(t)*tpx.perks1(t, x, pars)
-
-(acxn = C*integrate(fn, 0, n)$value)
-#--------aproximar con una anualidad en tiempo continuo
-v = 1/(1 + i)
-dm = m*(1 - v^(1/m))
-delta = log(1 + i)
-(acxn*delta/dm)
-
-# Con base en los datos del Ejemplo 8.3.2, asumiendo n = 70. Es decir, 
-# el valor de una anualidad de vida por 70 años.
-
-aaxmn(x, m, n, i, pars)
 ```
 
 \newpage
@@ -204,7 +187,9 @@ Entonces la prima neta para este caso de estudio será:
 $$\anncon{x^s}{n}=\int_0^n e^{-\delta t} {}_{t}p^k_x dt$$
 \textbf{Desarrollo en R}
 ```{r}
+delta = log(1 + i)
 fn <- function(t, k = 1.02) exp(-delta*t)*tpx.perks1(t, x, pars)^(k)
+#----------Respuesta
 (aanx_s <- integrate(fn, lower = 0, upper = n)$value)
 ```
 
