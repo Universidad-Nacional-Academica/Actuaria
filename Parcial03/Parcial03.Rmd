@@ -208,7 +208,6 @@ fn <- function(t, k = 1.02) exp(-delta*t)*tpx.perks1(t, x, pars)^(k)
 (aanx_s <- integrate(fn, lower = 0, upper = n)$value)
 ```
 
-
 \eenum
 
 
