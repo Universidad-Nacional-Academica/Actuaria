@@ -59,6 +59,15 @@ informe.
 
 Las hipótesis y datos sobre tasas, edades, etc. son las mismas que se dieron para este grupo en el Trabajo No 2. Los valores monetarios pueden tomarse en millones de pesos.
 
+**Hipótesis para el problema:**
+
+\benum
+  \item La fuerza de mortalidad estándar $\mu_{x+t}$ dada por la ley de mortalidad asignada. Utilice los parámetros que aparecen en los ejemplos para la Ley escogida (vea las secciones \textsection 2.5 y \textsection 2.6).
+  \item Una fuerza de mortalidad sub-estándar multiplicativa: $\mu_{x+t}^s=k\mu_{x+t}$, con $k=1.02$.
+  \item La intensidad de transición $\mu_x^{ai}$ según el modelo Weibull dado en la sección \textsection 7.6.4, pag. 248, con los valores de los parámetros para mujeres especificados en el ejemplo 7.6.1, pag. 251.
+  \item Utilice una tasa $i=0.06$ y una tasa para incremento de costo de vida de $iq=0.025$, ambas efectivas anuales. Calcule para la edad: $x=40$. Use $n=110-x$ de manera que es un seguro de vida entera. Valor asegurado inicial $C=100$ unidades.
+\eenum
+
 \textbf{Sugerencia:} revisar los ejemplos en las secciones \textsection 8.2.7, pág. 311 y \textsection 8.3.6, pág. 329.
 
 Encuentre el valor de cada una de las anualidades de vida:
@@ -71,14 +80,7 @@ Encuentre el valor de cada una de las anualidades de vida:
 
 Explique qué garantiza cada una y cuáles son sus diferencias.
 
-**Hipótesis para el problema:**
-
-\benum
-  \item La fuerza de mortalidad estándar $\mu_{x+t}$ dada por la ley de mortalidad asignada. Utilice los parámetros que aparecen en los ejemplos para la Ley escogida (vea las secciones \textsection 2.5 y \textsection 2.6).
-  \item Una fuerza de mortalidad sub-estándar multiplicativa: $\mu_{x+t}^s=k\mu_{x+t}$, con $k=1.02$.
-  \item La intensidad de transición $\mu_x^{ai}$ según el modelo Weibull dado en la sección \textsection 7.6.4, pag. 248, con los valores de los parámetros para mujeres especificados en el ejemplo 7.6.1, pag. 251.
-  \item Utilice una tasa $i=0.06$ y una tasa para incremento de costo de vida de $iq=0.025$, ambas efectivas anuales. Calcule para la edad: $x=40$. Use $n=110-x$ de manera que es un seguro de vida entera. Valor asegurado inicial $C=100$ unidades.
-\eenum
+\newpage
 
 # Solución
 
@@ -111,16 +113,6 @@ a_4 &= 1.982141\times 10^{-5}.
 
 ```{r}
 #----------Ley Perks 1
-#----------Definir la fuerza de mortalidad
-muxt.perk1 <- function(t, x, pars){
-  a1 <- pars[1]
-  a2 <- pars[2]
-  a3 <- pars[3]
-  a4 <- pars[4]
-  m <- (a1 + a2*exp(a3*(x + t)))/(a4*exp(a3*(x + t)) + 1)
-  return(m)
-}
-
 #----------Definir tpx
 tpx.perks1 <- function(t, x, pars){
   a1 <- pars[1]
@@ -132,10 +124,10 @@ tpx.perks1 <- function(t, x, pars){
   return(v)
 }
 
-#----------Tasas y beneficio
+#----------Tasas y valor asegurado inicial
 i <- 0.06
 iq <- 0.025
-bt <- function(t) 100*(1 + iq)^(floor(t))
+C <- 100
 
 #----------Edades y período temporal en años
 x <- 40
@@ -150,14 +142,13 @@ pars <- c(7.130052*10^(-7), 2.005330*10^(-5), 1.123180*10^(-01), 1.982141*10^(-0
 \item Para encontrar la la prima neta en tiempo discreto con una $x = 40$ con $m$ pagos al año, de $1/m$ cada uno, para $m = 2, 4, 12$ (con anticipos) donde el temporal es $n = 110 - x$ con un costo inicial de $C = 1$ miles de unidades monetarias y una tasa de inflación del $iq = 25\%$ y una tasa técnica $i = 0.06$ efectivo anual cada una, se tiene que:
   
 \begin{align*}
-  \ddot{a}_{x:{\lcroof{n}}}^{(m)} = \cfrac{1}{m} \sum_{k=0}^{mn-1} v^{k/m} {}_{K/m}p_x
+  \ddot{a}_{x:{\lcroof{n}}}^{(m)} = \cfrac{1}{m} \sum_{k=0}^{mn-1} v^{\frac{k}{m}} {}_{\frac{k}{m}}p_x
 \end{align*}
 
 \textbf{Desarrollo en R}
 ```{r}
 #----------Pagos de 1/12 cada mes anticipado, total 1 año = 1
 m = 12
-C = 1
 
 aaxmn <-  function(x, m, n, i, pars){
   v <-  1/(1 + i);
@@ -167,16 +158,17 @@ aaxmn <-  function(x, m, n, i, pars){
   a  <-  sum(vkm*kmpx)/m;
   return(a)
   }
+```
 
+En un contrato para una vida (40) se tiene que la prima neta será:
+
+```{r}
 #----------Respuesta
-(axmn = C*aaxmn(x, m, n, i, pars))
+(axmn = aaxmn(x, m, n, i, pars))
 ```
 
 \newpage
-\item Para el caso de una anualidad continua temporal a $n$ años tiene valor presente:
-$$Y=\bar{a}_{\lcroof{T(x)\wedge n}}=\bar{a}_{\lcroof{T(x)}}I(T(x) \leq n)+ \bar{a}_{\lcroof{n}}I(T(x) > n)$$
-
-El valor esperado de la prima neta es:
+\item Para el caso de una anualidad continua temporal a $n$ años, el valor esperado de la prima neta es:
 
 $$\anncon{x}{n}=\int_0^n e^{-\delta t} {}_{t}p_x dt$$
 Considerando una fuerza de mortalidad sub-estándar multiplicativa:
@@ -189,9 +181,16 @@ $$\anncon{x^s}{n}=\int_0^n e^{-\delta t} {}_{t}p^k_x dt$$
 ```{r}
 delta = log(1 + i)
 fn <- function(t, k = 1.02) exp(-delta*t)*tpx.perks1(t, x, pars)^(k)
-#----------Respuesta
-(aanx_s <- integrate(fn, lower = 0, upper = n)$value)
 ```
+
+En un contrato para una vida (40) se tiene que la prima neta será:
+
+```{r}
+#----------Respuesta
+(aaxsn = integrate(fn, lower = 0, upper = n)$value)
+```
+
+Se nota que la anualidad discreta es un poco mayor que la continua, se puede deber a que el beneficio del primer seguro puede tener vencimiento, es decir, los pagos de estas primas solo deben pagarse por un corto período, y por eso, se elevan. Además, se garantiza que los resultados de las anualidades en tiempo continuo sirven para aproximar las anualidades con $m$ pagos en el año.
 
 \eenum
 
