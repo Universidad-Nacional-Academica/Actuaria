@@ -190,7 +190,9 @@ En un contrato para una vida (40) se tiene que la prima neta será de $14'008.23
 C*(aaxsn = integrate(fn, lower = 0, upper = n)$value)
 ```
 
-Se nota que la anualidad discreta es un poco mayor que la continua, se puede deber a que el beneficio del primer seguro puede tener vencimiento, es decir, los pagos de estas primas solo deben pagarse por un corto período, y por eso, se elevan. Además, se garantiza que los resultados de las anualidades en tiempo continuo sirven para aproximar las anualidades con $m$ pagos en el año.
+- Se nota que la anualidad discreta es un poco mayor que la continua, se puede deber a que el beneficio del primer seguro puede tener vencimiento, es decir, los pagos de estas primas solo deben pagarse por un corto período, y por eso, se elevan. Además, se garantiza que los resultados de las anualidades en tiempo continuo sirven para aproximar las anualidades con $m$ pagos en el año.
+
+- En el caso de la anualidad continua temporal $\anncon{x^s}{n}$ vemos que utiliza una fuerza de mortalidad sub estándar con un modelo multiplicativo, es decir que esta vida tiene una esperanza de vida mucho menor, por ello se espera que hayan menos pagos y por tanto la anualidad tiene un valor menor al de la prima neta en caso discreto.
 
 \eenum
 
